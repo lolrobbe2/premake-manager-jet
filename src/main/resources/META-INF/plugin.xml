@@ -5,11 +5,13 @@
     <vendor>lolrobbe2</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.terminal</depends>
+
 
     <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.lolrobbe2.premakemanagerjet.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.startup.MyProjectActivity" />
+        <terminalRunner implementation="com.github.lolrobbe2.premakemanagerjet.terminal.MyCustomTerminalRunner"/>
     </extensions>
 </idea-plugin>
