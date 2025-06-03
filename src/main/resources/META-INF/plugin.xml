@@ -5,13 +5,22 @@
     <vendor>lolrobbe2</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.terminal</depends>
 
+    <actions>
 
+        <group id="PremakeToolsGroup" text="Premake">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action id="com.github.lolrobbe2.premakemanagerjet.actions.PremakeManagerInteractiveAction"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.PremakeManagerInteractiveAction"
+                    text="Run Premake Interactive"
+                    description="Executes premake-manager-cli --interactive in the terminal">
+                <add-to-group group-id="ToolsMenu" anchor="last"/>
+            </action>
+        </group>
+    </actions>
     <resource-bundle>messages.MyBundle</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.lolrobbe2.premakemanagerjet.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.startup.MyProjectActivity" />
-        <terminalRunner implementation="com.github.lolrobbe2.premakemanagerjet.terminal.MyCustomTerminalRunner"/>
+        <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.startup.PremakeManagerActivity" />
     </extensions>
 </idea-plugin>
