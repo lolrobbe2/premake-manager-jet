@@ -4,12 +4,14 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 import com.github.lolrobbe2.premakemanagerjet.MyBundle
+import com.intellij.openapi.components.service
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {
 
     init {
         thisLogger().info(MyBundle.message("projectService", project.name))
+        project.service<PremakeCliRuntimeManager>()
         thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
     }
 
