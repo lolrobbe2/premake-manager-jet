@@ -3,16 +3,19 @@ package com.github.lolrobbe2.premakemanagerjet.services
 import com.intellij.openapi.components.*
 import com.intellij.util.xmlb.XmlSerializerUtil
 
-@Service(Service.Level.APP)
-@State(
-    name = "PremakeCliState",
-    storages = [Storage("premake-cli.xml")]
-)
-enum class VersionType{
+enum class VersionType {
     LATEST,
     ARTIFACT,
     PATH,
 }
+
+@State(
+    name = "PremakeCliState",
+    storages = [Storage("premake-cli.xml")],
+    category = SettingsCategory.TOOLS
+)
+
+@Service(Service.Level.APP)
 class PremakeCliStateService : PersistentStateComponent<PremakeCliStateService.State> {
 
     class State {
@@ -34,10 +37,14 @@ class PremakeCliStateService : PersistentStateComponent<PremakeCliStateService.S
         state.versionType = versionType;
     }
 
-    public fun checkVersionType(versionType: VersionType) : Boolean {
+    public fun checkVersionType(versionType: VersionType): Boolean {
         return state.versionType == versionType;
     }
-    public fun getVersionType() : VersionType { return state.versionType }
+
+    public fun getVersionType(): VersionType {
+        return state.versionType
+    }
+
     public fun setInstalledSha256(installedSha256: String) {
         state.installedSha256 = installedSha256;
     }

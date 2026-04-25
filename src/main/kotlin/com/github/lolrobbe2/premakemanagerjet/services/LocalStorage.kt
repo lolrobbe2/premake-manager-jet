@@ -24,7 +24,7 @@ object LocalStorage {
     }
 
     public fun getCurrentCLIDir(): String {
-        return getPluginBinPath() + PremakeCliStateService().getVersionType();
+        return getPluginBinPath() + "/" + PremakeCliStateService().getVersionType() + "/";
     }
 
     public fun downloadToPath(
@@ -32,7 +32,10 @@ object LocalStorage {
         targetPath: Path,
         onProgress: ((downloaded: Long, total: Long) -> Unit)? = null
     ) {
-        val client = HttpClient.newBuilder().build()
+        // Change your builder to this:
+        val client = HttpClient.newBuilder()
+            .followRedirects(HttpClient.Redirect.NORMAL) // This fixes the 302!
+            .build()
 
         val request = HttpRequest.newBuilder()
             .uri(URI.create(sourceUrl))

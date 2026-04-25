@@ -1,6 +1,8 @@
 package com.github.lolrobbe2.premakemanagerjet.startup
 
 import com.github.lolrobbe2.premakemanagerjet.services.GithubUtils
+import com.github.lolrobbe2.premakemanagerjet.services.PremakeCliRuntimeManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
@@ -8,8 +10,7 @@ import com.intellij.openapi.startup.ProjectActivity
 class MyProjectActivity : ProjectActivity {
 
     override suspend fun execute(project: Project) {
+        service<PremakeCliRuntimeManager>()
         thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
-        val assets = GithubUtils.getLatestReleaseAssets()
-
     }
 }

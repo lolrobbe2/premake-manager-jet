@@ -1,5 +1,6 @@
 package com.github.lolrobbe2.premakemanagerjet.services
 
+import com.intellij.openapi.util.SystemInfo
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -41,5 +42,18 @@ object GithubUtils {
 
         val release = Json { ignoreUnknownKeys = true }.decodeFromString<Release>(response)
         return release.assets
+    }
+
+    suspend fun getLatestReleaseAsset(): Asset {
+        val assets = getLatestReleaseAssets()
+
+        return assets.find { asset ->
+            when {
+                SystemInfo.isWindows ->  asset.name == "premake-manager-cli-win.exe"
+                SystemInfo.isMac -> asset.name == "premake-manager-cli-darwin"
+                SystemInfo.isLinux -> asset.name == "premake-manager-cli-linux"
+                else -> false
+            }
+        } ?: throw IllegalStateException("No compatible asset found for ${SystemInfo.getOsName()}")
     }
 }
