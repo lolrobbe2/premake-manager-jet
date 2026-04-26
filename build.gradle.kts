@@ -1,6 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.models.productInfo
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
@@ -16,6 +17,7 @@ dependencies {
     intellijPlatform {
         intellijIdea("2025.2.6.1")
         testFramework(TestFrameworkType.Platform)
+        bundledPlugin("org.jetbrains.plugins.terminal")
     }
 }
 

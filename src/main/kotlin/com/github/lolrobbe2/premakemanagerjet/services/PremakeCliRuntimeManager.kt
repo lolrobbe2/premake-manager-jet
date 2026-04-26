@@ -1,6 +1,7 @@
 package com.github.lolrobbe2.premakemanagerjet.services
 
 import com.github.lolrobbe2.premakemanagerjet.services.GithubUtils.getLatestReleaseAssets
+import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
@@ -10,10 +11,12 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.platform.ide.progress.withBackgroundProgress
 import com.intellij.platform.util.progress.reportProgress
 import com.intellij.platform.util.progress.reportRawProgress
+import com.intellij.remoteServer.runtime.log.TerminalHandler
+import com.intellij.terminal.*
+import com.intellij.terminal.session.*
 import java.nio.file.Path
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-
 @Service(Service.Level.APP)
 class PremakeCliRuntimeManager(private val scope: CoroutineScope) {
     private val log = Logger.getInstance(PremakeCliRuntimeManager::class.java)
@@ -22,6 +25,7 @@ class PremakeCliRuntimeManager(private val scope: CoroutineScope) {
         scope.launch {
 
             checkVersion()
+            TerminalSession()
         }
     }
 
@@ -74,5 +78,9 @@ class PremakeCliRuntimeManager(private val scope: CoroutineScope) {
             targetPath = targetPath,
             onProgress = onProgress
         )
+    }
+
+    fun setupTerminal(){
+
     }
 }

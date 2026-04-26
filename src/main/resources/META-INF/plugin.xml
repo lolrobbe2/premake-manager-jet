@@ -5,7 +5,6 @@
     <vendor>lolrobbe2</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
