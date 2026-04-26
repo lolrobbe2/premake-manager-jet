@@ -9,6 +9,13 @@ plugins {
     id("org.jetbrains.changelog")
     kotlin("plugin.serialization") version "2.1.0"
 }
+/**
+ * Exclude all kotlinx coroutine modules from the runtime classpath to avoid conflicts with the IDE.
+ * */
+configurations.runtimeClasspath {
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core")
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core-jvm")
+}
 
 dependencies {
     testImplementation("junit:junit:4.13.2")

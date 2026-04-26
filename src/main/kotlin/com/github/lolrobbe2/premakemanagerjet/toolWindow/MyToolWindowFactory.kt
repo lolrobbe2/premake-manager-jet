@@ -10,6 +10,7 @@ import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import com.github.lolrobbe2.premakemanagerjet.MyBundle
 import com.github.lolrobbe2.premakemanagerjet.services.MyProjectService
+import com.github.lolrobbe2.premakemanagerjet.services.PremakeCliRuntimeManager
 import javax.swing.JButton
 
 
@@ -30,13 +31,14 @@ class MyToolWindowFactory : ToolWindowFactory {
     class MyToolWindow(toolWindow: ToolWindow) {
 
         private val service = toolWindow.project.service<MyProjectService>()
-
+        private val cliService = toolWindow.project.service<PremakeCliRuntimeManager>();
         fun getContent() = JBPanel<JBPanel<*>>().apply {
             val label = JBLabel(MyBundle.message("randomLabel", "?"))
 
             add(label)
             add(JButton(MyBundle.message("shuffle")).apply {
                 addActionListener {
+                    cliService.launchSession()
                     label.text = MyBundle.message("randomLabel", service.getRandomNumber())
                 }
             })

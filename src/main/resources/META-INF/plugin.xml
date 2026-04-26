@@ -3,10 +3,8 @@
     <id>com.github.lolrobbe2.premakemanagerjet</id>
     <name>premake-manager-jet</name>
     <vendor>lolrobbe2</vendor>
-
     <depends>com.intellij.modules.platform</depends>
     <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.lolrobbe2.premakemanagerjet.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.startup.MyProjectActivity" />

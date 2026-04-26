@@ -3,6 +3,7 @@ package com.github.lolrobbe2.premakemanagerjet.services
 import com.intellij.openapi.diagnostic.Logger
 
 import com.intellij.openapi.application.PathManager
+import com.intellij.openapi.util.SystemInfo
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -25,6 +26,15 @@ object LocalStorage {
 
     public fun getCurrentCLIDir(): String {
         return getPluginBinPath() + "/" + PremakeCliStateService().getVersionType() + "/";
+    }
+
+    public fun getCurrentCLIPath(): String {
+        return getCurrentCLIDir() + when {
+            SystemInfo.isWindows -> "premake-manager-cli-win.exe"
+            SystemInfo.isMac -> "premake-manager-cli-darwin"
+            SystemInfo.isLinux -> "premake-manager-cli-linux"
+            else -> "premake-manager-cli-linux" // Default fallback
+        }
     }
 
     public fun downloadToPath(
