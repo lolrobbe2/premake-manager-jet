@@ -4,9 +4,31 @@
     <name>premake-manager-jet</name>
     <vendor>lolrobbe2</vendor>
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.terminal</depends>
+    <depends>org.jetbrains.plugins.github</depends>
     <resource-bundle>messages.MyBundle</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.lolrobbe2.premakemanagerjet.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.startup.MyProjectActivity" />
+        <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.actions.TerminalActionInstaller" />
+
     </extensions>
+    <actions>
+        <action id="RunMyCliAction"
+                class="com.github.lolrobbe2.premakemanagerjet.actions.PremakeManagerCLIAction"
+                text="Run CLI"
+                description="Run my CLI tool"
+                icon="AllIcons.Actions.Execute">
+        </action>
+        <group id="Premake.MainMenu"
+               text="Premake"
+               popup="true">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+
+        </group>
+        <group id="Premake.VersionMenu"
+               text="Version"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+        </group>
+    </actions>
 </idea-plugin>

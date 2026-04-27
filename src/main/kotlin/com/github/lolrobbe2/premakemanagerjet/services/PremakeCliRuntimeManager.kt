@@ -1,6 +1,7 @@
 package com.github.lolrobbe2.premakemanagerjet.services
 
-import com.github.lolrobbe2.premakemanagerjet.runner.PremakeTerminalRunner
+import com.github.lolrobbe2.premakemanagerjet.actions.PremakeTerminalRunner
+import com.github.lolrobbe2.premakemanagerjet.manager.GitHubAuthService
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.PathManager
@@ -18,13 +19,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.jetbrains.plugins.terminal.LocalTerminalDirectRunner
+import org.jetbrains.plugins.terminal.ShellStartupOptions
+import org.jetbrains.plugins.terminal.TerminalTabState
 import org.jetbrains.plugins.terminal.TerminalToolWindowManager
 
 @Service(Service.Level.PROJECT)
 class PremakeCliRuntimeManager(var project: Project) : Disposable {
     private val log = Logger.getInstance(PremakeCliRuntimeManager::class.java)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-
+    private var terminalRunner: PremakeTerminalRunner? = null
 
     fun init() {
         scope.launch {
@@ -83,8 +88,25 @@ class PremakeCliRuntimeManager(var project: Project) : Disposable {
         )
     }
 
-    fun launchSession() {
-        TerminalToolWindowManager.getInstance(this.project).createNewSession(PremakeTerminalRunner(this.project))
+
+    suspend fun createManagerTerminalTab(terminalManager: TerminalToolWindowManager, command: String = "") {
+        if(terminalRunner == null) {
+            val token = GitHubAuthService.getToken(project)
+            terminalRunner = PremakeTerminalRunner(project = project, token!!)
+        }
+
+        val tabState = TerminalTabState().apply {
+            myTabName = "Premake Manager"
+            myWorkingDirectory = project.basePath
+            myShellCommand = listOf(
+                LocalStorage.getCurrentCLIPath(),
+                "--interactive",command
+            )
+        }
+
+        withContext(Dispatchers.EDT) {
+            terminalManager.createNewSession(terminalRunner!!, tabState)
+        }
     }
 
     override fun dispose() {

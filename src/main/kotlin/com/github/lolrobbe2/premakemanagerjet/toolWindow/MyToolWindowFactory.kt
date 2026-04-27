@@ -26,19 +26,15 @@ class MyToolWindowFactory : ToolWindowFactory {
         toolWindow.contentManager.addContent(content)
     }
 
-    override fun shouldBeAvailable(project: Project) = true
-
     class MyToolWindow(toolWindow: ToolWindow) {
 
         private val service = toolWindow.project.service<MyProjectService>()
-        private val cliService = toolWindow.project.service<PremakeCliRuntimeManager>();
         fun getContent() = JBPanel<JBPanel<*>>().apply {
             val label = JBLabel(MyBundle.message("randomLabel", "?"))
 
             add(label)
             add(JButton(MyBundle.message("shuffle")).apply {
                 addActionListener {
-                    cliService.launchSession()
                     label.text = MyBundle.message("randomLabel", service.getRandomNumber())
                 }
             })
