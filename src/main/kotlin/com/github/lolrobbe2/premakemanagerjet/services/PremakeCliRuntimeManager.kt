@@ -13,6 +13,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.platform.ide.progress.withBackgroundProgress
 import com.intellij.platform.util.progress.reportRawProgress
+import com.intellij.terminal.ui.TerminalWidget
 import java.nio.file.Path
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ import org.jetbrains.plugins.terminal.LocalTerminalDirectRunner
 import org.jetbrains.plugins.terminal.ShellStartupOptions
 import org.jetbrains.plugins.terminal.TerminalTabState
 import org.jetbrains.plugins.terminal.TerminalToolWindowManager
+import org.jetbrains.plugins.terminal.session.impl.TerminalSession
 
 @Service(Service.Level.PROJECT)
 class PremakeCliRuntimeManager(var project: Project) : Disposable {
@@ -92,20 +94,28 @@ class PremakeCliRuntimeManager(var project: Project) : Disposable {
     suspend fun createManagerTerminalTab(terminalManager: TerminalToolWindowManager, command: String = "") {
         if(terminalRunner == null) {
             val token = GitHubAuthService.getToken(project)
-            terminalRunner = PremakeTerminalRunner(project = project, token!!)
+            terminalRunner = PremakeTerminalRunner(project = project,token = token!!)
         }
 
         val tabState = TerminalTabState().apply {
             myTabName = "Premake Manager"
-            myWorkingDirectory = project.basePath
             myShellCommand = listOf(
-                LocalStorage.getCurrentCLIPath(),
-                "--interactive",command
+                command
             )
         }
 
         withContext(Dispatchers.EDT) {
-            terminalManager.createNewSession(terminalRunner!!, tabState)
+            var widget:  TerminalWidget? = terminalManager.terminalWidgets
+                .firstOrNull { it.terminalTitle.defaultTitle == "Premake Manager" }
+            if (widget == null) {
+                terminalManager.createNewSession(terminalRunner!!,tabState)
+                widget = terminalManager.terminalWidgets
+                    .firstOrNull { it.terminalTitle.defaultTitle == "Premake Manager" }
+            }
+
+            if (widget != null && command.isNotBlank()) {
+                widget.sendCommandToExecute(command)
+            }
         }
     }
 

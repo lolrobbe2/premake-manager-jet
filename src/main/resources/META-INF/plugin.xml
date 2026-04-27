@@ -29,6 +29,50 @@
                text="Version"
                popup="true">
             <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+            <action id="VersionListReleases"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.version.ListReleasesAction"
+                   />
+            <action id="VersionListInstalled"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.version.ListInstalledAction"
+            />
+            <action id="VersionSet"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.version.SetVersionTagAction"
+            />
+        </group>
+        <group id="Premake.ConfigMenu"
+               text="Config"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+        </group>
+        <group id="Premake.WorkspaceMenu"
+               text="Workspace"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+        </group>
+        <group id="Premake.ModuleMenu"
+               text="Module"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+        </group>
+        <group id="Premake.LibraryMenu"
+               text="Library"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+        </group>
+        <group id="Premake.TestMenu"
+               text="Test"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+        </group>
+        <group id="Premake.IndexMenu"
+               text="Index"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+        </group>
+        <group id="Premake.RemotesMenu"
+               text="Remotes"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
         </group>
     </actions>
 </idea-plugin>

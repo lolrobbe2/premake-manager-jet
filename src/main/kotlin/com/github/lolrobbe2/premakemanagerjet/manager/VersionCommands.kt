@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project
 
 object VersionCommands {
     suspend fun setVersion(tag: String?, project: Project){
-        if (tag != null) {
+        if (tag != null && tag != "") {
             CommandExecutor.executeCommand("version set $tag", project)
         } else {
             CommandExecutor.executeCommand("version set", project)

@@ -10,12 +10,10 @@ import org.jetbrains.plugins.terminal.TerminalToolWindowManager
 
 object CommandExecutor {
     suspend fun executeCommand(command: String, project: Project) {
-        var correctedCommand = command;
-            if(command != "")
-                correctedCommand += "\n"
+
             project.service<PremakeCliRuntimeManager>().createManagerTerminalTab(
                 terminalManager = TerminalToolWindowManager.getInstance(project),
-                command = correctedCommand
+                command = command
             )
 
     }
