@@ -1,6 +1,6 @@
-package com.github.lolrobbe2.premakemanagerjet.actions.version
+package com.github.lolrobbe2.premakemanagerjet.actions.library
 
-import com.github.lolrobbe2.premakemanagerjet.manager.commands.VersionCommands
+import com.github.lolrobbe2.premakemanagerjet.manager.commands.LibraryCommands
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages
@@ -8,9 +8,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SetVersionTagAction : AnAction(
-    "Set Version",
-    "Set the preferred installed premake version",
+class LibraryInfoCommand : AnAction(
+    "Get Library Info",
+    "Get the info for a given library",
     null
 ) {
     override fun actionPerformed(e: AnActionEvent) {
@@ -18,12 +18,12 @@ class SetVersionTagAction : AnAction(
 
         val tag = Messages.showInputDialog(
             project,
-            "Enter version tag (leave empty for none):",
-            "Set Version",
+            "Enter the github link of the library:",
+            "Library Info",
             Messages.getQuestionIcon()
         )
         CoroutineScope(Dispatchers.Default).launch {
-            VersionCommands.setVersion(tag,project)
+            LibraryCommands.LibraryInfo(tag,project)
         }
     }
 }

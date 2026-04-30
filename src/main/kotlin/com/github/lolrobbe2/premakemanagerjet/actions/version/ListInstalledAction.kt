@@ -1,6 +1,6 @@
 package com.github.lolrobbe2.premakemanagerjet.actions.version
 
-import com.github.lolrobbe2.premakemanagerjet.manager.VersionCommands
+import com.github.lolrobbe2.premakemanagerjet.manager.commands.VersionCommands
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import kotlinx.coroutines.CoroutineScope

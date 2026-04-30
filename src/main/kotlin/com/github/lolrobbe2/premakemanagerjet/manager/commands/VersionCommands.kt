@@ -1,5 +1,6 @@
-package com.github.lolrobbe2.premakemanagerjet.manager
+package com.github.lolrobbe2.premakemanagerjet.manager.commands
 
+import com.github.lolrobbe2.premakemanagerjet.manager.CommandExecutor
 import com.intellij.openapi.project.Project
 
 object VersionCommands {
