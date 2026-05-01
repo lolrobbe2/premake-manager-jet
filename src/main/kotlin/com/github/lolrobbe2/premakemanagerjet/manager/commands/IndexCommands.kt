@@ -25,7 +25,7 @@ object IndexCommands {
         }
     }
 
-    suspend fun indexUriLibrary(uri: String?, project: Project) {
+    suspend fun indexAddUriLibrary(uri: String?, project: Project) {
         if (checkValid(listOf(uri))) {
             CommandExecutor.executeCommand("index add uri library $uri", project)
         } else {
