@@ -1,26 +1,36 @@
 package com.github.lolrobbe2.premakemanagerjet.services
 
-import com.github.lolrobbe2.premakemanagerjet.services.GithubUtils.getLatestReleaseAssets
+import com.github.lolrobbe2.premakemanagerjet.actions.PremakeCliTerminalRunner
+import com.github.lolrobbe2.premakemanagerjet.manager.GitHubAuthService
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
-import com.intellij.openapi.util.SystemInfo
 import com.intellij.platform.ide.progress.withBackgroundProgress
-import com.intellij.platform.util.progress.reportProgress
 import com.intellij.platform.util.progress.reportRawProgress
+import com.intellij.terminal.ui.TerminalWidget
 import java.nio.file.Path
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.jetbrains.plugins.terminal.TerminalTabState
+import org.jetbrains.plugins.terminal.TerminalToolWindowManager
 
-@Service(Service.Level.APP)
-class PremakeCliRuntimeManager(private val scope: CoroutineScope) {
+@Service(Service.Level.PROJECT)
+class PremakeCliRuntimeManager(var project: Project) : Disposable {
     private val log = Logger.getInstance(PremakeCliRuntimeManager::class.java)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private var terminalRunner: PremakeCliTerminalRunner? = null
 
-    init {
+    fun init() {
         scope.launch {
-
             checkVersion()
         }
     }
@@ -36,7 +46,7 @@ class PremakeCliRuntimeManager(private val scope: CoroutineScope) {
 
             // Get the first active project to show the progress card, or null for global
             val project = ProjectManager.getInstance().openProjects.firstOrNull()
-            val destination = Path.of(LocalStorage.getCurrentCLIDir() +  platformAsset.name)
+            val destination = Path.of(LocalStorage.getCurrentCLIDir() + platformAsset.name)
             if (project == null)
                 return
 
@@ -74,5 +84,38 @@ class PremakeCliRuntimeManager(private val scope: CoroutineScope) {
             targetPath = targetPath,
             onProgress = onProgress
         )
+    }
+
+
+    suspend fun createManagerTerminalTab(terminalManager: TerminalToolWindowManager, command: String = "") {
+        if(terminalRunner == null) {
+            val token = GitHubAuthService.getToken(project)
+            terminalRunner = PremakeCliTerminalRunner(project = project,token = token!!)
+        }
+
+        val tabState = TerminalTabState().apply {
+            myTabName = "Premake Manager"
+            myShellCommand = listOf(
+                command
+            )
+        }
+
+        withContext(Dispatchers.EDT) {
+            var widget:  TerminalWidget? = terminalManager.terminalWidgets
+                .firstOrNull { it.terminalTitle.defaultTitle == "Premake Manager" }
+            if (widget == null) {
+                terminalManager.createNewSession(terminalRunner!!,tabState)
+                widget = terminalManager.terminalWidgets
+                    .firstOrNull { it.terminalTitle.defaultTitle == "Premake Manager" }
+            }
+
+            if (widget != null && command.isNotBlank()) {
+                widget.sendCommandToExecute(command)
+            }
+        }
+    }
+
+    override fun dispose() {
+        scope.cancel()
     }
 }

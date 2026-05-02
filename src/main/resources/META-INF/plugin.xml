@@ -3,13 +3,127 @@
     <id>com.github.lolrobbe2.premakemanagerjet</id>
     <name>premake-manager-jet</name>
     <vendor>lolrobbe2</vendor>
-
     <depends>com.intellij.modules.platform</depends>
-
+    <depends>org.jetbrains.plugins.terminal</depends>
+    <depends>org.jetbrains.plugins.github</depends>
     <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.lolrobbe2.premakemanagerjet.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.startup.MyProjectActivity" />
+        <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.actions.TerminalActionInstaller" />
     </extensions>
+
+    <actions>
+        <action id="RunMyCliAction"
+                class="com.github.lolrobbe2.premakemanagerjet.actions.PremakeManagerCLIAction"
+                text="Run CLI"
+                description="Run my CLI tool"
+                icon="AllIcons.Actions.Execute">
+        </action>
+        <group id="Premake.MainMenu"
+               text="Premake"
+               popup="true">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+
+        </group>
+        <group id="Premake.VersionMenu"
+               text="Version"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+            <action id="VersionListReleases"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.version.ListReleasesAction"
+                   />
+            <action id="VersionListInstalled"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.version.ListInstalledAction"
+            />
+            <action id="VersionSet"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.version.SetVersionTagAction"
+            />
+        </group>
+        <group id="Premake.ConfigMenu"
+               text="Config"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+            <action id="ConfigVersionSet"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.config.ConfigSetVersionAction"
+            />
+            <action id="ConfigView"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.config.ConfigViewAction"
+            />
+            <action id="Configure"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.config.ConfigureAction"
+            />
+        </group>
+        <group id="Premake.ModuleMenu"
+               text="Module"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+            <action id="ModuleAdd"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.module.ModuleAddAction"
+            />
+            <action id="ModuleInfo"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.module.ModuleInfoAction"
+            />
+            <action id="ModuleInstall"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.module.ModuleInstallAction"
+            />
+            <action id="ModuleRemove"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.module.ModuleRemoveAction"
+            />
+        </group>
+        <group id="Premake.LibraryMenu"
+               text="Library"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+            <action id="LibraryAdd"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.library.LibraryAddAction"
+            />
+            <action id="ModuleInfo"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.library.LibraryInfoAction"
+            />
+            <action id="ModuleInstall"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.library.LibraryInstallAction"
+            />
+            <action id="ModuleRemove"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.library.LibraryRemoveAction"
+            />
+        </group>
+        <group id="Premake.IndexMenu"
+               text="Index"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+            <action id="IndexNew"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.index.IndexNewAction"
+            />
+            <action id="IndexAddUriLibrary"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.index.IndexAddUriLibraryAction"
+            />
+            <action id="IndexAddLibrary"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.index.IndexAddLibraryAtion"
+            />
+            <action id="IndexAddDependency"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.index.IndexAddDependencyAction"
+            />
+        </group>
+        <group id="Premake.RemotesMenu"
+               text="Remotes"
+               popup="true">
+            <add-to-group group-id="Premake.MainMenu" anchor="last"/>
+            <action id="RemotesView"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.remotes.RemotesViewAction"
+            />
+            <action id="RemotesUpdate"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.remotes.RemotesUpdateAction"
+            />
+            <action id="RemotesReset"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.remotes.RemotesResetAction"
+            />
+            <action id="RemotesRemove"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.remotes.RemotesRemoveAction"
+            />
+            <action id="RemotesAdd"
+                    class="com.github.lolrobbe2.premakemanagerjet.actions.remotes.RemotesAddAction"
+            />
+        </group>
+    </actions>
+
 </idea-plugin>

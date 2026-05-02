@@ -1,6 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.models.productInfo
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
@@ -8,14 +9,24 @@ plugins {
     id("org.jetbrains.changelog")
     kotlin("plugin.serialization") version "2.1.0"
 }
+/**
+ * Exclude all kotlinx coroutine modules from the runtime classpath to avoid conflicts with the IDE.
+ * */
+configurations.runtimeClasspath {
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core")
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core-jvm")
+}
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        intellijIdea("2025.2.6.1")
+        intellijIdea("2025.3")
+
         testFramework(TestFrameworkType.Platform)
+        bundledPlugin("org.jetbrains.plugins.terminal")
+        bundledPlugin("org.jetbrains.plugins.github")
     }
 }
 

@@ -10,6 +10,7 @@ import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import com.github.lolrobbe2.premakemanagerjet.MyBundle
 import com.github.lolrobbe2.premakemanagerjet.services.MyProjectService
+import com.github.lolrobbe2.premakemanagerjet.services.PremakeCliRuntimeManager
 import javax.swing.JButton
 
 
@@ -25,12 +26,9 @@ class MyToolWindowFactory : ToolWindowFactory {
         toolWindow.contentManager.addContent(content)
     }
 
-    override fun shouldBeAvailable(project: Project) = true
-
     class MyToolWindow(toolWindow: ToolWindow) {
 
         private val service = toolWindow.project.service<MyProjectService>()
-
         fun getContent() = JBPanel<JBPanel<*>>().apply {
             val label = JBLabel(MyBundle.message("randomLabel", "?"))
 
