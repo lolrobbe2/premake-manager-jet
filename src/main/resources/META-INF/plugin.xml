@@ -10,8 +10,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.startup.MyProjectActivity" />
         <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.actions.TerminalActionInstaller" />
-
     </extensions>
+
     <actions>
         <action id="RunMyCliAction"
                 class="com.github.lolrobbe2.premakemanagerjet.actions.PremakeManagerCLIAction"
@@ -125,4 +125,5 @@
             />
         </group>
     </actions>
+
 </idea-plugin>

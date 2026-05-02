@@ -19,7 +19,7 @@ class TerminalActionInstaller: ProjectActivity {
 
         terminalToolWindow?.let { toolWindow ->
             withContext(Dispatchers.EDT) {
-                toolWindow.setTitleActions(listOf(PremakeManagerCLIAction()))
+                toolWindow.setTitleActions(listOf(PremakeManagerCLIAction(),PremakeCLIAction()))
             }
         }
     }

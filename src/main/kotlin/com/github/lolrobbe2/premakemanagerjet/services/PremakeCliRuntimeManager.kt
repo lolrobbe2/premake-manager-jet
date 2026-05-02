@@ -1,11 +1,10 @@
 package com.github.lolrobbe2.premakemanagerjet.services
 
-import com.github.lolrobbe2.premakemanagerjet.actions.PremakeTerminalRunner
+import com.github.lolrobbe2.premakemanagerjet.actions.PremakeCliTerminalRunner
 import com.github.lolrobbe2.premakemanagerjet.manager.GitHubAuthService
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.PathManager
-import com.intellij.openapi.components.ComponentManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.Logger
@@ -21,17 +20,14 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.plugins.terminal.LocalTerminalDirectRunner
-import org.jetbrains.plugins.terminal.ShellStartupOptions
 import org.jetbrains.plugins.terminal.TerminalTabState
 import org.jetbrains.plugins.terminal.TerminalToolWindowManager
-import org.jetbrains.plugins.terminal.session.impl.TerminalSession
 
 @Service(Service.Level.PROJECT)
 class PremakeCliRuntimeManager(var project: Project) : Disposable {
     private val log = Logger.getInstance(PremakeCliRuntimeManager::class.java)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private var terminalRunner: PremakeTerminalRunner? = null
+    private var terminalRunner: PremakeCliTerminalRunner? = null
 
     fun init() {
         scope.launch {
@@ -94,7 +90,7 @@ class PremakeCliRuntimeManager(var project: Project) : Disposable {
     suspend fun createManagerTerminalTab(terminalManager: TerminalToolWindowManager, command: String = "") {
         if(terminalRunner == null) {
             val token = GitHubAuthService.getToken(project)
-            terminalRunner = PremakeTerminalRunner(project = project,token = token!!)
+            terminalRunner = PremakeCliTerminalRunner(project = project,token = token!!)
         }
 
         val tabState = TerminalTabState().apply {
