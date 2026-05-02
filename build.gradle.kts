@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
     id("org.jetbrains.intellij.platform")
     id("org.jetbrains.changelog")
-    kotlin("plugin.serialization") version "2.1.0"
+    kotlin("plugin.serialization") version "2.3.21"
 }
 /**
  * Exclude all kotlinx coroutine modules from the runtime classpath to avoid conflicts with the IDE.
