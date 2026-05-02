@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ModuleRemoveAction : AnAction(
-    "Module Remove",
+    "Remove",
     "Remove a module from the premakeConfig.yml",
     null
 ) {

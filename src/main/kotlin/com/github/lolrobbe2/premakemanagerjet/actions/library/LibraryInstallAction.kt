@@ -1,6 +1,6 @@
-package com.github.lolrobbe2.premakemanagerjet.actions.module
+package com.github.lolrobbe2.premakemanagerjet.actions.library
 
-import com.github.lolrobbe2.premakemanagerjet.manager.commands.ModuleCommands
+import com.github.lolrobbe2.premakemanagerjet.manager.commands.LibraryCommands
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages
@@ -8,9 +8,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ModuleInstallCommand : AnAction(
-    "Install Module",
-    "Install/download a module",
+class LibraryInstallAction : AnAction(
+    "Install",
+    "Install/download a Library",
     null
 ) {
     override fun actionPerformed(e: AnActionEvent) {
@@ -18,12 +18,12 @@ class ModuleInstallCommand : AnAction(
 
         val tag = Messages.showInputDialog(
             project,
-            "Enter the github link of the module:",
-            "Install Module",
+            "Enter the github link of the library:",
+            "Install Library",
             Messages.getQuestionIcon()
         )
         CoroutineScope(Dispatchers.Default).launch {
-            ModuleCommands.ModuleInstall(tag,project)
+            LibraryCommands.LibraryInstall(tag,project)
         }
     }
 }

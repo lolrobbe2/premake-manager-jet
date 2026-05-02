@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RemotesResetAction : AnAction(
-    "Reset Remotes",
+    "Reset",
     "Reset the local remotes to default",
     null
 ) {

@@ -45,7 +45,7 @@ class IndexAddDependencyRepoDialog(project: Project) : DialogWrapper(project) {
 }
 
 class IndexAddDependencyAction : AnAction(
-    "Add Library",
+    "Add Dependency",
     "Create a new index repository",
     null
 ) {

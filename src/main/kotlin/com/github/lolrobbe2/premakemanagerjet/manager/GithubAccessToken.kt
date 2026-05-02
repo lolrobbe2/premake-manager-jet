@@ -19,7 +19,7 @@ object GitHubAuthService {
     fun getToken(project: Project): String? {
 
         // 1. Try cached token first
-        val cached = PasswordSafe.instance.get(ATTRS)?.getPasswordAsString()
+        val cached = PasswordSafe.instance[ATTRS]?.getPasswordAsString()
         if (!cached.isNullOrEmpty()) {
             return cached
         }

@@ -1,6 +1,6 @@
-package com.github.lolrobbe2.premakemanagerjet.actions.library
+package com.github.lolrobbe2.premakemanagerjet.actions.module
 
-import com.github.lolrobbe2.premakemanagerjet.manager.commands.LibraryCommands
+import com.github.lolrobbe2.premakemanagerjet.manager.commands.ModuleCommands
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages
@@ -8,9 +8,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LibraryInfoCommand : AnAction(
-    "Get Library Info",
-    "Get the info for a given library",
+class ModuleInfoAction : AnAction(
+    "Get Info",
+    "Get the info for a given module",
     null
 ) {
     override fun actionPerformed(e: AnActionEvent) {
@@ -18,12 +18,12 @@ class LibraryInfoCommand : AnAction(
 
         val tag = Messages.showInputDialog(
             project,
-            "Enter the github link of the library:",
-            "Library Info",
+            "Enter the github link of the module:",
+            "Module Info",
             Messages.getQuestionIcon()
         )
         CoroutineScope(Dispatchers.Default).launch {
-            LibraryCommands.LibraryInfo(tag,project)
+            ModuleCommands.ModuleInfo(tag,project)
         }
     }
 }

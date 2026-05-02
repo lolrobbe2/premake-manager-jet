@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LibraryAddAction : AnAction(
-    "Add Library",
+    "Add",
     "Add a module to the premakeConfig.yml",
     null
 ) {

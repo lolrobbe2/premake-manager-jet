@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ModuleAddAction: AnAction(
-    "Add Module",
+    "Add",
     "Add a module to the premakeConfig.yml",
     null
 ) {

@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RemotesViewAction : AnAction(
-    "View Remotes",
+    "View",
     "View all the local system remotes",
     null
 ) {

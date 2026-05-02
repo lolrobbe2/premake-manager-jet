@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LibraryRemoveAction : AnAction(
-    "Remove Library",
+    "Remove",
     "Remove a library from the premakeConfig.yml",
     null
 ) {
