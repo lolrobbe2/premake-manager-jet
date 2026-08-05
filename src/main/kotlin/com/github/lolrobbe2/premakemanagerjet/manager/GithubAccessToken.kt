@@ -1,7 +1,6 @@
 package com.github.lolrobbe2.premakemanagerjet.manager
 
 import com.intellij.openapi.project.Project
-import com.intellij.collaboration.auth.services.OAuthService
 import com.intellij.credentialStore.CredentialAttributes
 import com.intellij.credentialStore.Credentials
 import com.intellij.ide.passwordSafe.PasswordSafe
@@ -10,7 +9,6 @@ import org.jetbrains.plugins.github.authentication.AuthorizationType
 import org.jetbrains.plugins.github.authentication.GHAccountAuthData
 import org.jetbrains.plugins.github.authentication.GHAccountsUtil
 import org.jetbrains.plugins.github.authentication.GHLoginSource
-import java.util.concurrent.CompletableFuture
 
 object GitHubAuthService {
     private val ATTRS =
