@@ -77,13 +77,13 @@
             <action id="LibraryAdd"
                     class="com.github.lolrobbe2.premakemanagerjet.actions.library.LibraryAddAction"
             />
-            <action id="ModuleInfo"
+            <action id="LibraryInfo"
                     class="com.github.lolrobbe2.premakemanagerjet.actions.library.LibraryInfoAction"
             />
-            <action id="ModuleInstall"
+            <action id="LibraryInstall"
                     class="com.github.lolrobbe2.premakemanagerjet.actions.library.LibraryInstallAction"
             />
-            <action id="ModuleRemove"
+            <action id="LibraryRemove"
                     class="com.github.lolrobbe2.premakemanagerjet.actions.library.LibraryRemoveAction"
             />
         </group>
