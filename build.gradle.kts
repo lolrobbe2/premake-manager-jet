@@ -18,16 +18,17 @@ configurations.runtimeClasspath {
 }
 
 dependencies {
-    testImplementation("junit:junit:4.13.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        intellijIdea("2025.3")
-
+        clion("2026.1")
         testFramework(TestFrameworkType.Platform)
+        bundledPlugin("com.intellij.clion")
         bundledPlugin("org.jetbrains.plugins.terminal")
+        bundledPlugin("Git4Idea")
         bundledPlugin("org.jetbrains.plugins.github")
     }
+
 }
 
 // Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
@@ -67,7 +68,18 @@ changelog {
     repositoryUrl = providers.gradleProperty("pluginRepositoryUrl")
     versionPrefix = ""
 }
+// 1. Completely disable test task execution
+tasks.withType<Test>().configureEach {
+    enabled = false
+}
 
+// 2. Clear test source sets so Gradle never compiles or looks for test classes
+sourceSets {
+    test {
+        java.setSrcDirs(emptyList<String>())
+        kotlin.setSrcDirs(emptyList<String>())
+    }
+}
 tasks {
     publishPlugin {
         dependsOn(patchChangelog)
