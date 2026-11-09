@@ -1,5 +1,6 @@
 package com.github.lolrobbe2.premakemanagerjet.actions
 
+import com.github.lolrobbe2.premakemanagerjet.Icons
 import com.github.lolrobbe2.premakemanagerjet.manager.CommandExecutor
 import com.github.lolrobbe2.premakemanagerjet.services.PremakeCliRuntimeManager
 import com.intellij.icons.AllIcons
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 class PremakeManagerCLIAction : AnAction(
     "Run Premake Manager",
     "Run Premake Manager CLI",
-    IconLoader.getIcon("/icons/premake_manager.png", PremakeManagerCLIAction::class.java)
+    Icons.PremakeManager
 ) {
     override fun actionPerformed(e: AnActionEvent) {
 

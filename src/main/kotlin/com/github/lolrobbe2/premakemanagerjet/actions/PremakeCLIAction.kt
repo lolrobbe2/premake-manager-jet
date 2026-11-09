@@ -1,5 +1,6 @@
 package com.github.lolrobbe2.premakemanagerjet.actions
 
+import com.github.lolrobbe2.premakemanagerjet.Icons
 import com.github.lolrobbe2.premakemanagerjet.manager.CommandExecutor
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 class PremakeCLIAction : AnAction(
     "Run Premake5",
     "Run Premake5",
-    IconLoader.getIcon("/icons/premake_manager.png", PremakeManagerCLIAction::class.java)
+    Icons.PremakeManager
 ) {
     override fun actionPerformed(e: AnActionEvent) {
 

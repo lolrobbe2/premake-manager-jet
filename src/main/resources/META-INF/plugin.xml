@@ -10,6 +10,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.startup.MyProjectActivity" />
         <postStartupActivity implementation="com.github.lolrobbe2.premakemanagerjet.actions.TerminalActionInstaller" />
+        <newProjectWizard.languageGenerator
+                implementation="com.github.lolrobbe2.premakemanagerjet.workspace.PremakeNewProjectWizard"/>
+        <projectOpenProcessor
+                implementation="com.github.lolrobbe2.premakemanagerjet.workspace.PremakeProjectOpenProcessor"/>
     </extensions>
 
     <actions>
