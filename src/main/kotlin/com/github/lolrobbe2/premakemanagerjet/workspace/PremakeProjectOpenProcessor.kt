@@ -1,7 +1,9 @@
 package com.github.lolrobbe2.premakemanagerjet.workspace
 import com.intellij.openapi.diagnostic.logger
 import com.github.lolrobbe2.premakemanagerjet.Icons
+import com.intellij.ide.impl.ProjectUtil
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.projectImport.ProjectOpenProcessor
 import javax.swing.Icon
@@ -27,4 +29,10 @@ class PremakeProjectOpenProcessor : ProjectOpenProcessor()  {
         get() = "Premake"
     override val isStrongProjectInfoHolder: Boolean
         get() = true
+
+    override suspend fun openProjectAsync(virtualFile: VirtualFile, projectOpenOptions: ProjectOpenOptions): Project? {
+        return Project {
+
+        }
+    }
 }

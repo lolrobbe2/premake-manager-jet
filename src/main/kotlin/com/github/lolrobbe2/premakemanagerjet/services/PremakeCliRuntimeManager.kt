@@ -1,7 +1,7 @@
 package com.github.lolrobbe2.premakemanagerjet.services
 
 import com.github.lolrobbe2.premakemanagerjet.actions.PremakeCliTerminalRunner
-import com.github.lolrobbe2.premakemanagerjet.manager.GitHubAuthService
+import com.github.lolrobbe2.premakemanagerjet.manager.auth.AuthService
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.PathManager
@@ -28,7 +28,7 @@ class PremakeCliRuntimeManager(var project: Project) : Disposable {
     private val log = Logger.getInstance(PremakeCliRuntimeManager::class.java)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private var terminalRunner: PremakeCliTerminalRunner? = null
-
+    private val authService by lazy { service<AuthService>() }
     fun init() {
         scope.launch {
             checkVersion()
@@ -89,8 +89,8 @@ class PremakeCliRuntimeManager(var project: Project) : Disposable {
 
     suspend fun createManagerTerminalTab(terminalManager: TerminalToolWindowManager, command: String = "") {
         if(terminalRunner == null) {
-            val token = GitHubAuthService.getToken(project)
-            terminalRunner = PremakeCliTerminalRunner(project = project,token = token!!)
+
+            terminalRunner = PremakeCliTerminalRunner(project = project,token = "token")
         }
 
         val tabState = TerminalTabState().apply {

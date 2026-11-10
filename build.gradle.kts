@@ -18,10 +18,11 @@ configurations.runtimeClasspath {
 }
 
 dependencies {
+    implementation("org.kohsuke:github-api:1.330")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0")
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        clion("2026.1")
+        clion("2026.3")
         testFramework(TestFrameworkType.Platform)
         bundledPlugin("com.intellij.clion")
         bundledPlugin("org.jetbrains.plugins.terminal")

@@ -54,6 +54,6 @@ object GithubUtils {
                 SystemInfo.isLinux -> asset.name == "premake-manager-cli-linux"
                 else -> false
             }
-        } ?: throw IllegalStateException("No compatible asset found for ${SystemInfo.getOsName()}")
+        } ?: throw IllegalStateException("No compatible asset found for ${SystemInfo.OS_NAME}")
     }
 }

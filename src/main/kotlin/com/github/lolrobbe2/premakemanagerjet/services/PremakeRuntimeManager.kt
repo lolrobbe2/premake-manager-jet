@@ -2,7 +2,6 @@ package com.github.lolrobbe2.premakemanagerjet.services
 
 import com.github.lolrobbe2.premakemanagerjet.actions.PremakeCliTerminalRunner
 import com.github.lolrobbe2.premakemanagerjet.actions.PremakeTerminalRunner
-import com.github.lolrobbe2.premakemanagerjet.manager.GitHubAuthService
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.Logger
