@@ -38,7 +38,7 @@ object LocalStorage {
     }
 
     public fun getCurrentExportPath(): String {
-        return getPluginBinPath() + "/export/export.lua";
+        return getPluginBinPath() + "/export/";
     }
     public fun downloadToPath(
         sourceUrl: String,

@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.lolrobbe2.premakemanagerjet</id>
-    <name>premake-manager-jet</name>
+    <name>Premake-Manager-Jet</name>
     <vendor>lolrobbe2</vendor>
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.plugins.terminal</depends>
@@ -25,7 +25,7 @@
         <action id="RunMyCliAction"
                 class="com.github.lolrobbe2.premakemanagerjet.actions.PremakeManagerCLIAction"
                 text="Run CLI"
-                description="Run my CLI tool"
+                description="Run the Managager Cli"
                 icon="AllIcons.Actions.Execute">
         </action>
         <group id="Premake.MainMenu"

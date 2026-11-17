@@ -61,7 +61,7 @@ class PremakeExportStateService : PersistentStateComponent<PremakeExportStateSer
         var installedSha256: String? = null
     }
     private var state = State()
-    override fun getState(): PremakeExportStateService.State? {
+    override fun getState(): PremakeExportStateService.State {
         return state
     }
 
