@@ -10,6 +10,15 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.plugins.terminal.TerminalToolWindowManager
 
 object CommandExecutor {
+    suspend fun executeCommand(
+        command: String,
+        args: Array<String>,
+        project: Project
+    ) {
+        val fullCommand = (listOf(command) + args).joinToString(" ")
+
+        executeCommand(fullCommand, project)
+    }
     suspend fun executeCommand(command: String, project: Project) {
 
             project.service<PremakeCliRuntimeManager>().createManagerTerminalTab(
@@ -20,5 +29,14 @@ object CommandExecutor {
     }
     suspend fun executePremakeCommand(command: String, project: Project) {
         project.service<PremakeRuntimeManager>().createManagerTerminalTab(terminalManager = TerminalToolWindowManager.getInstance(project), command = command)
+    }
+    suspend fun executePremakeCommand(
+        command: String,
+        args: Array<String>,
+        project: Project
+    ) {
+        val fullCommand = (listOf(command) + args).joinToString(" ")
+
+        executePremakeCommand(fullCommand, project)
     }
 }

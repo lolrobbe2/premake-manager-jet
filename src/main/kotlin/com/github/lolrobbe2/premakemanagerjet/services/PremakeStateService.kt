@@ -49,3 +49,23 @@ class PremakeCliStateService : PersistentStateComponent<PremakeCliStateService.S
         state.installedSha256 = installedSha256;
     }
 }
+
+@State(
+    name = "PremakeExportState",
+    storages = [Storage("premake-export.xml")],
+    category = SettingsCategory.TOOLS
+)
+@Service(Service.Level.APP)
+class PremakeExportStateService : PersistentStateComponent<PremakeExportStateService.State> {
+    class State {
+        var installedSha256: String? = null
+    }
+    private var state = State()
+    override fun getState(): PremakeExportStateService.State? {
+        return state
+    }
+
+    override fun loadState(state: PremakeExportStateService.State) {
+        XmlSerializerUtil.copyBean(state, this.state)
+    }
+}

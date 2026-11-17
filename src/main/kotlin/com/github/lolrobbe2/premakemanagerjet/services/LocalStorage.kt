@@ -37,14 +37,16 @@ object LocalStorage {
         }
     }
 
+    public fun getCurrentExportPath(): String {
+        return getPluginBinPath() + "/export/export.lua";
+    }
     public fun downloadToPath(
         sourceUrl: String,
         targetPath: Path,
         onProgress: ((downloaded: Long, total: Long) -> Unit)? = null
     ) {
-        // Change your builder to this:
         val client = HttpClient.newBuilder()
-            .followRedirects(HttpClient.Redirect.NORMAL) // This fixes the 302!
+            .followRedirects(HttpClient.Redirect.NORMAL)
             .build()
 
         val request = HttpRequest.newBuilder()

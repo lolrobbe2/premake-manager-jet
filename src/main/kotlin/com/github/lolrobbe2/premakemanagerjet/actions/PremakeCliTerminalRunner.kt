@@ -31,8 +31,8 @@ class PremakeCliTerminalRunner(
         )
         builder.envVariables(mergedEnv)
         val updated = builder.build()
-        super.configureStartupOptions(updated)
-        return updated
+        return super.configureStartupOptions(updated)
+
     }
 
     override fun getDefaultTabTitle(): String = "Premake Manager"

@@ -2,6 +2,10 @@
 
 package com.github.lolrobbe2.premakemanagerjet.manager.auth
 
+import com.intellij.openapi.ide.CopyPasteManager
+import java.awt.datatransfer.StringSelection
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.credentialStore.CredentialAttributes
 import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.BrowserUtil
@@ -29,7 +33,7 @@ import java.net.http.HttpRequest
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 
-internal const val SERVICE_NAME = "myplugin"
+internal const val SERVICE_NAME = "AuthService"
 private const val DEVICE_CODE_URL =
     "https://github.com/login/device/code"
 
@@ -44,7 +48,7 @@ private const val SCOPES = "read:user user:email"
 sealed interface AuthState {
     data object Disconnected : AuthState
 
-    data class AwaitingAuthorization(
+    data class AwaitingDeviceCode(
         val userCode: String,
         val verificationUri: String
     ) : AuthState
@@ -69,6 +73,7 @@ data class DeviceCodeResponse(
     @SerialName("verification_uri")
     val verificationUri: String
 )
+
 private val httpClient: HttpClient = HttpClient.newBuilder()
     .connectTimeout(Duration.ofSeconds(10))
     .build()
@@ -118,20 +123,40 @@ class AuthService(val coroutineScope: CoroutineScope) {
         storeToken(null)
         _state.value = AuthState.Disconnected
     }
+    fun acquireToken(): String? {
+        val token = PasswordSafe.instance.getPassword(credentials)
 
+        if (!token.isNullOrBlank()) {
+            return token
+        }
+
+        ApplicationManager.getApplication().invokeLater {
+            ShowSettingsUtil.getInstance().showSettingsDialog(
+                null,
+                AuthConfigurable::class.java
+            )
+        }
+
+        return null
+    }
     private fun storeToken(token: String?) = PasswordSafe.instance.setPassword(credentials, token)
     private suspend fun requestToken(): String {
         val deviceCode = requestDeviceCode()
 
-        _state.value = AuthState.AwaitingAuthorization(
+        _state.value = AuthState.AwaitingDeviceCode(
             userCode = deviceCode.userCode,
             verificationUri = deviceCode.verificationUri
         )
-
-        BrowserUtil.browse(deviceCode.verificationUri)
-
-        return exchangeCodeForToken(deviceCode.deviceCode,"")
-    }
+        CopyPasteManager.getInstance().setContents(
+            StringSelection(deviceCode.userCode)
+        )
+        return exchangeCodeForToken(
+            code = deviceCode.deviceCode,
+            grantType = "urn:ietf:params:oauth:grant-type:device_code",
+            interval = deviceCode.interval,
+            expiresIn = deviceCode.expiresIn
+        )
+        }
     suspend fun requestDeviceCode(): DeviceCodeResponse =
         withContext(Dispatchers.IO) {
             val body = "client_id=${
@@ -178,8 +203,88 @@ class AuthService(val coroutineScope: CoroutineScope) {
         "device_code" to code,
         "grant_type" to grantType,
     )
-    private suspend fun exchangeCodeForToken(code: String, grantType: String) = withContext(Dispatchers.IO) {
-        parseAccessToken(post(tokenUrl(code, grantType), null).readString())
+    private suspend fun exchangeCodeForToken(
+        code: String,
+        grantType: String,
+        interval: Int,
+        expiresIn: Int
+    ): String = withContext(Dispatchers.IO) {
+
+        var pollingInterval = interval.coerceAtLeast(1)
+
+        val expiresAt = System.nanoTime() +
+                java.util.concurrent.TimeUnit.SECONDS.toNanos(
+                    expiresIn.toLong()
+                )
+
+        while (true) {
+
+            // Wait for GitHub's required polling interval.
+            val remainingNanos = expiresAt - System.nanoTime()
+
+            if (remainingNanos <= 0L) {
+                throw java.io.IOException("Device code expired")
+            }
+
+            val remainingMillis =
+                java.util.concurrent.TimeUnit.NANOSECONDS
+                    .toMillis(remainingNanos).coerceAtLeast(1L)
+
+            delay(minOf(pollingInterval * 1000L, remainingMillis))
+
+            if (System.nanoTime() >= expiresAt) {
+                throw java.io.IOException("Device code expired")
+            }
+
+            // Poll GitHub.
+            val body = post(
+                tokenUrl(code, grantType),
+                null
+            ).readString()
+
+            val parameters = QueryStringDecoder("/?$body").parameters()
+
+            val accessToken = parameters["access_token"]?.firstOrNull()
+
+            if (!accessToken.isNullOrBlank()) {
+                return@withContext accessToken
+            }
+
+            // Handle OAuth polling responses.
+            when (parameters["error"]?.firstOrNull()) {
+
+                "authorization_pending" -> {
+                    // User hasn't authorized yet. Continue polling.
+                }
+
+                "slow_down" -> {
+                    // GitHub requires another 5 seconds.
+                    pollingInterval += 5
+                }
+
+                "access_denied" -> {
+                    throw java.io.IOException("GitHub authorization denied")
+                }
+
+                "expired_token", "token_expired" -> {
+                    throw java.io.IOException("GitHub device code expired")
+                }
+
+                "device_flow_disabled" -> {
+                    throw java.io.IOException(
+                        "Device Flow is not enabled in GitHub App settings"
+                    )
+                }
+
+                else -> {
+                    throw java.io.IOException(
+                        "GitHub OAuth error: $body"
+                    )
+                }
+            }
+        }
+
+        throw IllegalStateException("Unreachable")
     }
     private suspend fun fetchUserProfile(token: String): String? = withContext(Dispatchers.IO) {
         runCatching { GitHubBuilder().withOAuthToken(token).build().myself.login }

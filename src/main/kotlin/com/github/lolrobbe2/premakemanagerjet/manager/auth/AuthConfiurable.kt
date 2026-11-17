@@ -38,7 +38,7 @@ class AuthConfigurable : BoundConfigurable("Premake Manager Authentication") {
                 }
             }
 
-            is AuthState.AwaitingAuthorization -> {
+            is AuthState.AwaitingDeviceCode -> {
                 row("Authorization required") {
                     label("Enter this code on GitHub:")
                 }
@@ -63,6 +63,7 @@ class AuthConfigurable : BoundConfigurable("Premake Manager Authentication") {
                     label("Waiting for authorization...")
                 }
             }
+
 
             is AuthState.Connected -> {
                 row("Username") {

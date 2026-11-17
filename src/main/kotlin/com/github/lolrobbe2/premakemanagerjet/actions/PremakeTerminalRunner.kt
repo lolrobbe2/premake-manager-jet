@@ -36,7 +36,7 @@ class PremakeTerminalRunner(project: Project) : LocalTerminalDirectRunner(projec
         }
 
         builder.shellCommand(listOf(shellPath))
-        return builder.build()
+        return super.configureStartupOptions(builder.build())
     }
     private fun getRefreshedPath(): String? {
         return try {

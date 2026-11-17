@@ -2,6 +2,7 @@ package com.github.lolrobbe2.premakemanagerjet.services
 
 import com.github.lolrobbe2.premakemanagerjet.actions.PremakeCliTerminalRunner
 import com.github.lolrobbe2.premakemanagerjet.manager.auth.AuthService
+import com.github.lolrobbe2.premakemanagerjet.services.LocalStorage.getCurrentExportPath
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.PathManager
@@ -41,7 +42,6 @@ class PremakeCliRuntimeManager(var project: Project) : Disposable {
         val test: String = PathManager.getBinPath()
         stateService.state.installedSha256 = "";
         log.info(test)
-        // Use your logic to determine if update is needed
         if (platformAsset.digest != stateService.state.installedSha256) {
 
             // Get the first active project to show the progress card, or null for global
@@ -73,7 +73,6 @@ class PremakeCliRuntimeManager(var project: Project) : Disposable {
         }
     }
 
-
     fun installAsset(asset: Asset, targetPath: Path, onProgress: ((Long, Long) -> Unit)? = null) {
 
 
@@ -89,8 +88,8 @@ class PremakeCliRuntimeManager(var project: Project) : Disposable {
 
     suspend fun createManagerTerminalTab(terminalManager: TerminalToolWindowManager, command: String = "") {
         if(terminalRunner == null) {
-
-            terminalRunner = PremakeCliTerminalRunner(project = project,token = "token")
+            val token = authService.acquireToken();
+            terminalRunner = PremakeCliTerminalRunner(project = project,token = token!!)
         }
 
         val tabState = TerminalTabState().apply {

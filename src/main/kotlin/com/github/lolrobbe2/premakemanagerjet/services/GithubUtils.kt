@@ -56,4 +56,17 @@ object GithubUtils {
             }
         } ?: throw IllegalStateException("No compatible asset found for ${SystemInfo.OS_NAME}")
     }
+    suspend fun getLatestExportReleaseAssets(): List<Asset> {
+        val response: String = client.get(
+            "https://api.github.com/repos/lolrobbe2/premake-export/releases/latest"
+        ) {
+            headers {
+                append(HttpHeaders.Accept, "application/vnd.github+json")
+                append(HttpHeaders.UserAgent, "ktor-client")
+            }
+        }.body()
+
+        val release = Json { ignoreUnknownKeys = true }.decodeFromString<Release>(response)
+        return release.assets
+    }
 }

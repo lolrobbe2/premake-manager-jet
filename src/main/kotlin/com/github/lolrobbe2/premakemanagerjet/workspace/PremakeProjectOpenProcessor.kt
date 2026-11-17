@@ -5,6 +5,7 @@ import com.intellij.ide.impl.ProjectUtil
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.platform.PlatformProjectOpenProcessor
 import com.intellij.projectImport.ProjectOpenProcessor
 import javax.swing.Icon
 
@@ -31,8 +32,6 @@ class PremakeProjectOpenProcessor : ProjectOpenProcessor()  {
         get() = true
 
     override suspend fun openProjectAsync(virtualFile: VirtualFile, projectOpenOptions: ProjectOpenOptions): Project? {
-        return Project {
-
-        }
+        return PlatformProjectOpenProcessor.getInstance().openProjectAsync(virtualFile, projectOpenOptions);
     }
 }
